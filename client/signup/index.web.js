@@ -82,6 +82,11 @@ export default function() {
 		jetpackConnectController.plansSelection
 	);
 
+	page(
+		'/jetpack/login',
+		jetpackConnectController.login
+	);
+
 	page( '/jetpack/sso/:siteId?/:ssoNonce?', jetpackConnectController.sso );
 	page( '/jetpack/sso/*', jetpackConnectController.sso );
 };
