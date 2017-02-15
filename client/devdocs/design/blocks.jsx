@@ -61,6 +61,7 @@ import PostLikes from 'blocks/post-likes/docs/example';
 import ReaderFeaturedVideo from 'blocks/reader-featured-video/docs/example';
 import NpsSurvey from 'blocks/nps-survey/docs/example';
 import ReaderExportButton from 'blocks/reader-export-button/docs/example';
+import Login from 'blocks/login/docs/example';
 
 export default React.createClass( {
 
@@ -143,6 +144,7 @@ export default React.createClass( {
 						<NpsSurvey />
 					}
 					<ReaderExportButton />
+					<Login />
 				</Collection>
 			</Main>
 		);
