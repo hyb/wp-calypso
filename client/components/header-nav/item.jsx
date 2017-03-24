@@ -10,7 +10,6 @@ import Gridicon from 'gridicons';
 export const Item = props => {
 	const {
 		isSelected,
-		tabIndex,
 		onClick,
 		label,
 		icon,
@@ -27,7 +26,6 @@ export const Item = props => {
 			href={ href }
 			className={ classes }
 			onClick={ onClick }
-			tabIndex={ tabIndex }
 			aria-selected={ isSelected }
 			role="menuitem">
 			<Gridicon className="header-nav__icon" icon={ icon } size={ 24 } />
@@ -40,7 +38,6 @@ export const Item = props => {
 
 Item.propTypes = {
 	isSelected: PropTypes.bool,
-	tabIndex: PropTypes.number,
 	onClick: PropTypes.func,
 	label: PropTypes.string.isRequired,
 	icon: PropTypes.string,
@@ -49,7 +46,6 @@ Item.propTypes = {
 
 Item.defaultProps = {
 	isSelected: false,
-	tabIndex: 0,
 	onClick: noop,
 	icon: 'todo'
 };

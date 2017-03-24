@@ -88,7 +88,6 @@ export default class HeaderNav extends Component {
 				key={ index }
 				isSelected={ this.isSelected( item ) }
 				onClick={ this.selectItem.bind( this, item ) }
-				tabIndex={ index }
 				label={ item.label }
 				icon={ item.icon }
 				href={ item.uri }
