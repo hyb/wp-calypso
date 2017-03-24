@@ -74,18 +74,16 @@
 	}
 
 	&.is-selected {
-		background-color: $blue-dark;
-		color: $gray-light;
-
-		@include breakpoint( "<660px" ) {
-			.header-nav__items & {
-				display: none;
-			}
-		}		
+			background-color: $blue-dark;
+			color: $gray-light;
 	}
 
 	@include breakpoint( "<660px" ) {
 		padding: 0 15px;
+
+		.header-nav__items &.is-selected {
+			color: $blue-light;
+		}
 	}
 
 	@include breakpoint( ">660px" ) {

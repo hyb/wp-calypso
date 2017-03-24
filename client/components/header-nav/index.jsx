@@ -86,7 +86,7 @@ export default class HeaderNav extends Component {
 		return this.props.options.map( ( item, index ) =>
 			<Item
 				key={ index }
-				isSelected={ this.isSelected( item ) || this.isDropdownDefault( item ) }
+				isSelected={ this.isSelected( item ) }
 				onClick={ this.selectItem.bind( this, item ) }
 				tabIndex={ index }
 				label={ item.label }
@@ -141,10 +141,6 @@ export default class HeaderNav extends Component {
 
 	isDroppable( width ) {
 		return width < 661;
-	}
-
-	isDropdownDefault( option ) {
-		return this.isDroppable( this.state.width ) && option.uri === this.getSelected().uri;
 	}
 
 	isSelected( option ) {
