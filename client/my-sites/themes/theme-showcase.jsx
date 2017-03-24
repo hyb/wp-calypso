@@ -159,13 +159,13 @@ const ThemeShowcase = React.createClass( {
 
 		const headerIcons = [ {
 			label: 'new',
-			link: '/design',
+			uri: '/design',
 			icon: 'star'
 		} ].concat(
 			getSubjects()
 				.map( subject => subjectsMeta[ subject ] && {
 					label: subject,
-					link: `/design/${ subject }`,
+					uri: `/design/${ subject }`,
 					icon: subjectsMeta[ subject ].icon,
 					order: subjectsMeta[ subject ].order
 				} )
@@ -184,7 +184,7 @@ const ThemeShowcase = React.createClass( {
 					<HeaderNav
 						options={ headerIcons }
 						default={ headerIcons[ 0 ] }
-						href={ `/design${ verticalSection }` } />
+						uri={ `/design${ verticalSection }` } />
 				)}
 				<div className="themes__content">
 					<StickyPanel>

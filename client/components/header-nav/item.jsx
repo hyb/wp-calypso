@@ -14,7 +14,7 @@ export const Item = props => {
 		onClick,
 		label,
 		icon,
-		link
+		href
 	} = props;
 
 	const classes = classNames(
@@ -24,7 +24,7 @@ export const Item = props => {
 
 	return (
 		<a
-			href={ link }
+			href={ href }
 			className={ classes }
 			onClick={ onClick }
 			tabIndex={ tabIndex }
@@ -44,7 +44,7 @@ Item.propTypes = {
 	onClick: PropTypes.func,
 	label: PropTypes.string.isRequired,
 	icon: PropTypes.string,
-	link: PropTypes.string.isRequired
+	href: PropTypes.string.isRequired
 };
 
 Item.defaultProps = {

@@ -14,7 +14,7 @@ export default class HeaderNav extends Component {
 			PropTypes.shape( {
 				label: PropTypes.string.isRequired,
 				icon: PropTypes.string,
-				link: PropTypes.string
+				uri: PropTypes.string
 			} )
 		)
 	};
@@ -63,7 +63,7 @@ export default class HeaderNav extends Component {
 							isSelected={ true }
 							label={ this.getSelected().label }
 							icon={ this.getSelected().icon }
-							link={ this.getSelected().link }
+							href={ this.getSelected().uri }
 						/>
 						<Gridicon icon="chevron-down" className="header-nav__select__icon" />
 					</div>
@@ -91,7 +91,7 @@ export default class HeaderNav extends Component {
 				tabIndex={ index }
 				label={ item.label }
 				icon={ item.icon }
-				link={ item.link }
+				href={ item.uri }
 			/>
 		);
 	}
@@ -144,11 +144,11 @@ export default class HeaderNav extends Component {
 	}
 
 	isDropdownDefault( option ) {
-		return this.isDroppable( this.state.width ) && option.link === this.getSelected().link;
+		return this.isDroppable( this.state.width ) && option.uri === this.getSelected().uri;
 	}
 
 	isSelected( option ) {
-		return option.link === this.props.href;
+		return option.uri === this.props.uri;
 	}
 
 	getSelected() {
