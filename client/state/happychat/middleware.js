@@ -31,7 +31,7 @@ export const sendRouteSetEventMessage = ( connection, { getState }, action ) =>{
 	if ( isHappychatClientConnected( state ) &&
 		isHappychatAcceptingChats( state ) &&
 		isHappychatChatAssigned( state ) ) {
-		connection.sendEvent( `Looking at https://wordpress.com${ action.path }?support_user=${ currentUser.username } ` );
+		connection.sendEvent( `Looking at https://wordpress.com${ action.path }?support_user=${ currentUser.username }` );
 	}
 };
 
