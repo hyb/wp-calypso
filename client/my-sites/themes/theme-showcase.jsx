@@ -146,6 +146,7 @@ const ThemeShowcase = React.createClass( {
 			filter,
 			translate,
 			siteSlug,
+			vertical,
 			isLoggedIn
 		} = this.props;
 		const tier = config.isEnabled( 'upgrades/premium-themes' ) ? this.props.tier : 'free';
@@ -158,14 +159,13 @@ const ThemeShowcase = React.createClass( {
 
 		const headerIcons = [ {
 			label: 'new',
-			link: 'design',
-			icon: 'star',
-			order: 0
+			link: '/design',
+			icon: 'star'
 		} ].concat(
 			getSubjects()
 				.map( subject => subjectsMeta[ subject ] && {
 					label: subject,
-					link: '/design/filter/' + subject,
+					link: `/design/${ subject }`,
 					icon: subjectsMeta[ subject ].icon,
 					order: subjectsMeta[ subject ].order
 				} )
@@ -178,7 +178,12 @@ const ThemeShowcase = React.createClass( {
 			<Main className="themes">
 				<DocumentHead title={ themesMeta[ tier ].title } meta={ metas } />
 				<PageViewTracker path={ this.props.analyticsPath } title={ this.props.analyticsPageTitle } />
-				{ ! isLoggedIn && <HeaderNav options={ headerIcons } default={ headerIcons[ 0 ] } /> }
+				{ ! isLoggedIn && (
+					<HeaderNav
+						options={ headerIcons }
+						default={ headerIcons[ 0 ] }
+						href={ `/design/${ vertical }` } />
+				)}
 				<div className="themes__content">
 					<StickyPanel>
 						<ThemesSearchCard

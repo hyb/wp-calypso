@@ -27,7 +27,7 @@ export default class HeaderNav extends Component {
 		super( props );
 
 		this.state = {
-			selected: props.default,
+			selected: props.href,
 			collapsed: true,
 			width: 99999
 		};
@@ -86,11 +86,12 @@ export default class HeaderNav extends Component {
 		return this.props.options.map( ( item, index ) =>
 			<Item
 				key={ index }
-				isSelected={ this.state.selected.label === item.label }
+				isSelected={ this.isSelected( item ) || this.isDropdownDefault( item ) }
 				onClick={ this.selectItem.bind( this, item ) }
 				tabIndex={ index }
 				label={ item.label }
 				icon={ item.icon }
+				link={ item.link }
 			/>
 		);
 	}
@@ -101,7 +102,7 @@ export default class HeaderNav extends Component {
 		}
 
 		this.setState( ( state ) => ( {
-			selected: option,
+			selected: option.link,
 			collapsed: this.isDroppable( state.width ) || state.collapsed
 		} ) );
 	}
@@ -143,9 +144,18 @@ export default class HeaderNav extends Component {
 		return width < 661;
 	}
 
+	isDropdownDefault( option ) {
+		return this.isDroppable( this.state.width ) && option.link === this.getSelected().link;
+	}
+
+	isSelected( option ) {
+		return option.link === this.state.selected;
+	}
+
 	getSelected() {
 		return this.props.options.reduce(
-			( selected, current ) => current === this.state.selected ? current : selected
+			( selected, current ) => this.isSelected( current ) ? current : selected,
+			this.props.default
 		);
 	}
 }
