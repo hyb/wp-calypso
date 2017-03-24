@@ -183,7 +183,7 @@ const ThemeShowcase = React.createClass( {
 				{ ! isLoggedIn && (
 					<HeaderNav
 						options={ headerIcons }
-						default={ headerIcons[ 0 ] }
+						fallback={ headerIcons[ 0 ] }
 						uri={ `/design${ verticalSection }` } />
 				)}
 				<div className="themes__content">

@@ -10,13 +10,21 @@ import Item from 'components/header-nav/item';
 
 export default class HeaderNav extends Component {
 	static propTypes = {
+		fallback: PropTypes.shape(
+			{
+				label: PropTypes.string.isRequired,
+				uri: PropTypes.string.isRequired,
+				icon: PropTypes.string
+			}
+		),
 		options: PropTypes.arrayOf(
 			PropTypes.shape( {
 				label: PropTypes.string.isRequired,
-				icon: PropTypes.string,
-				uri: PropTypes.string
+				uri: PropTypes.string.isRequired,
+				icon: PropTypes.string
 			} )
-		)
+		),
+		uri: PropTypes.string.isRequired
 	};
 
 	static defaultProps = {
@@ -149,7 +157,7 @@ export default class HeaderNav extends Component {
 	getSelected() {
 		return this.props.options.reduce(
 			( selected, current ) => this.isSelected( current ) ? current : selected,
-			this.props.default
+			this.props.fallback
 		);
 	}
 }

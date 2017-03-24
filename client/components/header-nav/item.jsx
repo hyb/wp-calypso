@@ -47,7 +47,7 @@ Item.propTypes = {
 Item.defaultProps = {
 	isSelected: false,
 	onClick: noop,
-	icon: 'todo'
+	icon: 'star'
 };
 
 export default Item;
