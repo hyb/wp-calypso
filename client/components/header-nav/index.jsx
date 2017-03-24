@@ -27,7 +27,6 @@ export default class HeaderNav extends Component {
 		super( props );
 
 		this.state = {
-			selected: props.href,
 			collapsed: true,
 			width: 99999
 		};
@@ -64,6 +63,7 @@ export default class HeaderNav extends Component {
 							isSelected={ true }
 							label={ this.getSelected().label }
 							icon={ this.getSelected().icon }
+							link={ this.getSelected().link }
 						/>
 						<Gridicon icon="chevron-down" className="header-nav__select__icon" />
 					</div>
@@ -102,7 +102,6 @@ export default class HeaderNav extends Component {
 		}
 
 		this.setState( ( state ) => ( {
-			selected: option.link,
 			collapsed: this.isDroppable( state.width ) || state.collapsed
 		} ) );
 	}
@@ -149,7 +148,7 @@ export default class HeaderNav extends Component {
 	}
 
 	isSelected( option ) {
-		return option.link === this.state.selected;
+		return option.link === this.props.href;
 	}
 
 	getSelected() {

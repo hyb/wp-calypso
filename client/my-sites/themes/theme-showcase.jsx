@@ -173,6 +173,8 @@ const ThemeShowcase = React.createClass( {
 				.sort( ( a, b ) => a.order - b.order )
 		);
 
+		const verticalSection = vertical ? `/${ vertical }` : '';
+
 		// FIXME: Logged-in title should only be 'Themes'
 		return (
 			<Main className="themes">
@@ -182,7 +184,7 @@ const ThemeShowcase = React.createClass( {
 					<HeaderNav
 						options={ headerIcons }
 						default={ headerIcons[ 0 ] }
-						href={ `/design/${ vertical }` } />
+						href={ `/design${ verticalSection }` } />
 				)}
 				<div className="themes__content">
 					<StickyPanel>
