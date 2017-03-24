@@ -41,7 +41,7 @@ Item.propTypes = {
 	onClick: PropTypes.func,
 	label: PropTypes.string.isRequired,
 	icon: PropTypes.string,
-	href: PropTypes.string.isRequired
+	href: PropTypes.string
 };
 
 Item.defaultProps = {

@@ -71,7 +71,6 @@ export default class HeaderNav extends Component {
 							isSelected={ true }
 							label={ this.getSelected().label }
 							icon={ this.getSelected().icon }
-							href={ this.getSelected().uri }
 						/>
 						<Gridicon icon="chevron-down" className="header-nav__select__icon" />
 					</div>
