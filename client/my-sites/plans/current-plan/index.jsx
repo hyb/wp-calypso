@@ -4,6 +4,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
+import find from 'lodash/find';
 
 /**
  * Internal Dependencies
@@ -24,12 +25,15 @@ import ProductPurchaseFeaturesList from 'blocks/product-purchase-features/produc
 import CurrentPlanHeader from './header';
 import QuerySites from 'components/data/query-sites';
 import QuerySitePlans from 'components/data/query-site-plans';
+import QuerySitePurchases from 'components/data/query-site-purchases';
 import { PLAN_BUSINESS } from 'lib/plans/constants';
 import { getPlan } from 'lib/plans';
 import QuerySiteDomains from 'components/data/query-site-domains';
 import { getDecoratedSiteDomains } from 'state/sites/domains/selectors';
 import DomainWarnings from 'my-sites/upgrades/components/domain-warnings';
 import isSiteAutomatedTransfer from 'state/selectors/is-site-automated-transfer';
+import { getSitePurchases, getIncludedDomainPurchase } from 'state/purchases/selectors';
+import { isPlan } from 'lib/products-values';
 
 class CurrentPlan extends Component {
 	static propTypes = {
@@ -40,6 +44,7 @@ class CurrentPlan extends Component {
 		domains: PropTypes.array,
 		currentPlan: PropTypes.object,
 		isExpiring: PropTypes.bool,
+		includedDomainPurchase: PropTypes.object,
 		shouldShowDomainWarnings: PropTypes.bool,
 		hasDomainsLoaded: PropTypes.bool,
 	};
@@ -81,6 +86,7 @@ class CurrentPlan extends Component {
 			context,
 			currentPlan,
 			isExpiring,
+			includedDomainPurchase = null,
 			shouldShowDomainWarnings,
 			hasDomainsLoaded,
 			translate,
@@ -99,6 +105,7 @@ class CurrentPlan extends Component {
 				<DocumentHead title={ translate( 'Plans', { textOnly: true } ) } />
 				<QuerySites siteId={ selectedSiteId } />
 				<QuerySitePlans siteId={ selectedSiteId } />
+				<QuerySitePurchases siteId={ selectedSiteId } />
 				{ shouldQuerySiteDomains && <QuerySiteDomains siteId={ selectedSiteId } /> }
 
 				<PlansNavigation
@@ -132,6 +139,7 @@ class CurrentPlan extends Component {
 					<ProductPurchaseFeaturesList
 						plan={ currentPlanSlug }
 						isPlaceholder={ isLoading }
+						includedDomainPurchase={ includedDomainPurchase }
 					/>
 				</ProductPurchaseFeatures>
 
@@ -149,11 +157,15 @@ export default connect(
 
 		const isWpcom = ! isJetpackSite( state, selectedSiteId );
 		const isAutomatedTransfer = isSiteAutomatedTransfer( state, selectedSiteId );
+		const sitePurchases = getSitePurchases( state, selectedSiteId );
+		const sitePlanPurchase = find( sitePurchases, purchase => ( isPlan( purchase ) ) );
+		const includedDomainPurchase = getIncludedDomainPurchase( state, sitePlanPurchase );
 
 		return {
 			selectedSite,
 			selectedSiteId,
 			domains,
+			includedDomainPurchase,
 			context: ownProps.context,
 			currentPlan: getCurrentPlan( state, selectedSiteId ),
 			isExpiring: isCurrentPlanExpiring( state, selectedSiteId ),

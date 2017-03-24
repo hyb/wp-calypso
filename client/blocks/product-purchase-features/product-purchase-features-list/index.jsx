@@ -67,12 +67,14 @@ class ProductPurchaseFeaturesList extends Component {
 		const {
 			selectedSite,
 			planHasDomainCredit,
+			includedDomainPurchase,
 		} = this.props;
 
 		return [
 			<CustomDomain
 				selectedSite={ selectedSite }
 				hasDomainCredit={ planHasDomainCredit }
+				includedDomainPurchase={ includedDomainPurchase }
 				key="customDomainFeature"
 			/>,
 			<AdvertisingRemoved
