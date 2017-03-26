@@ -70,14 +70,8 @@ class FollowingManage extends Component {
 	}
 
 	render() {
-		const { query } = this.props;
-
-		let searchPlaceholderText = this.props.searchPlaceholderText;
-		if ( ! searchPlaceholderText ) {
-			searchPlaceholderText = this.props.translate(
-				'Search millions of sites'
-			);
-		}
+		const { query, translate } = this.props;
+		const searchPlaceholderText = translate( 'Search millions of sites' );
 
 		return (
 			<div className="following-manage">
