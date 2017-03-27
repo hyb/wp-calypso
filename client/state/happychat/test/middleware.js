@@ -3,17 +3,31 @@
  */
 import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
-import { stub } from 'sinon';
+import { spy, stub } from 'sinon';
 
 /**
  * Internal dependencies
  */
 import {
+	HAPPYCHAT_SEND_BROWSER_INFO,
 	HAPPYCHAT_TRANSCRIPT_RECEIVE,
 } from 'state/action-types';
-import { requestTranscript } from '../middleware';
+import middleware, { requestTranscript } from '../middleware';
+import useFakeDom from 'test/helpers/use-fake-dom';
 
 describe( 'middleware', () => {
+	useFakeDom();
+	describe( 'HAPPYCHAT_SET_MESSAGE action', () => {
+		it( 'should send relevant browser information to the connection', () => {
+			const action = { type: HAPPYCHAT_SEND_BROWSER_INFO, siteUrl: 'http://butt.holdings/' };
+			const connection = { info: spy() };
+			middleware( connection )()( spy() )( action );
+
+			expect( connection.info ).to.have.been.calledOnce;
+			expect( connection.info.firstCall.args[ 0 ].text ).to.include( action.siteUrl );
+		} );
+	} );
+
 	describe( 'HAPPYCHAT_TRANSCRIPT_REQUEST action', () => {
 		it( 'should fetch transcript from connection and dispatch receive action', () => {
 			const state = deepFreeze( {

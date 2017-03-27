@@ -20,6 +20,7 @@ import {
 	HAPPYCHAT_CONNECTED,
 	HAPPYCHAT_SET_MESSAGE,
 	HAPPYCHAT_RECEIVE_EVENT,
+	HAPPYCHAT_SEND_BROWSER_INFO,
 	HAPPYCHAT_SET_AVAILABLE,
 	HAPPYCHAT_SET_CHAT_STATUS,
 	HAPPYCHAT_TRANSCRIPT_RECEIVE,
@@ -81,19 +82,7 @@ const sendTyping = throttle( message => {
 	connection.typing( message );
 }, 1000, { leading: true, trailing: false } );
 
-export const sendBrowserInfo = ( siteurl ) => dispatch => {
-	const siteHelp = `Site I need help with: ${ siteurl }\n`;
-	const screenRes = `Screen Resolution: ${ screen.width }x${ screen.height }\n`;
-	const browserSize = `Browser Size: ${ window.innerWidth }x${ window.innerHeight }\n`;
-	const userAgent = `User Agent: ${ navigator.userAgent }`;
-	const msg = {
-		text: `Info\n ${ siteHelp } ${ screenRes } ${ browserSize } ${ userAgent }`,
-	};
-
-	debug( 'sending info message', msg );
-	dispatch( clearChatMessage() );
-	connection.info( msg );
-};
+export const sendBrowserInfo = siteUrl => ( { type: HAPPYCHAT_SEND_BROWSER_INFO, siteUrl } );
 
 /**
  * Opens Happychat Socket.IO client connection.
