@@ -44,6 +44,7 @@ import {
 } from 'state/ui/selectors';
 import { getDomainNameFromReceiptOrCart } from 'lib/domains/utils';
 import { fetchSitesAndUser } from 'lib/signup/step-actions';
+import { startLuckyOrangeTracking } from 'state/analytics/actions';
 
 const Checkout = React.createClass( {
 	mixins: [ observe( 'sites', 'productsList' ) ],
@@ -72,7 +73,7 @@ const Checkout = React.createClass( {
 		}
 
 		window.scrollTo( 0, 0 );
-		analytics.luckyOrange.initialize();
+		this.props.startLuckyOrangeTracking( analytics );
 	},
 
 	componentWillReceiveProps: function( nextProps ) {
@@ -388,6 +389,7 @@ module.exports = connect(
 		clearPurchases,
 		clearSitePlans,
 		fetchReceiptCompleted,
-		recordApplePayStatus
+		recordApplePayStatus,
+		startLuckyOrangeTracking
 	}
 )( Checkout );
