@@ -20,6 +20,7 @@ import {
 	HAPPYCHAT_CONNECTED,
 	HAPPYCHAT_SET_MESSAGE,
 	HAPPYCHAT_RECEIVE_EVENT,
+	HAPPYCHAT_SEND_MESSAGE,
 	HAPPYCHAT_SET_AVAILABLE,
 	HAPPYCHAT_SET_CHAT_STATUS,
 	HAPPYCHAT_TRANSCRIPT_RECEIVE,
@@ -135,8 +136,4 @@ export const updateChatMessage = message => dispatch => {
 	}
 };
 
-export const sendChatMessage = message => dispatch => {
-	debug( 'sending message', message );
-	dispatch( clearChatMessage() );
-	connection.send( message );
-};
+export const sendChatMessage = message => ( { type: HAPPYCHAT_SEND_MESSAGE, message } );

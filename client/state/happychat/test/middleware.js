@@ -3,17 +3,31 @@
  */
 import { expect } from 'chai';
 import deepFreeze from 'deep-freeze';
-import { stub } from 'sinon';
+import { spy, stub } from 'sinon';
 
 /**
  * Internal dependencies
  */
 import {
+	HAPPYCHAT_SEND_MESSAGE,
 	HAPPYCHAT_TRANSCRIPT_RECEIVE,
 } from 'state/action-types';
-import { requestTranscript } from '../middleware';
+import middleware, { requestTranscript } from '../middleware';
 
 describe( 'middleware', () => {
+	describe( 'HAPPYCHAT_SEND_MESSAGE action', () => {
+		it( 'should send the message through the connection and send a notTyping signal', () => {
+			const action = { type: HAPPYCHAT_SEND_MESSAGE, message: 'Hello world' };
+			const connection = {
+				send: spy(),
+				notTyping: spy(),
+			};
+			middleware( connection )()( spy() )( action );
+			expect( connection.send ).to.have.been.calledWith( action.message );
+			expect( connection.notTyping ).to.have.been.calledOnce;
+		} );
+	} );
+
 	describe( 'HAPPYCHAT_TRANSCRIPT_REQUEST action', () => {
 		it( 'should fetch transcript from connection and dispatch receive action', () => {
 			const state = deepFreeze( {
