@@ -15,7 +15,9 @@ import RecommendedPosts from 'reader/stream/recommended-posts';
 import HeaderBack from 'reader/header-back';
 import SearchInput from 'components/search';
 import ReaderMain from 'components/reader-main';
-// import SubscriptionListItem from 'blocks/reader-subscription-list-item/';
+import SubscriptionListItem from 'blocks/reader-subscription-list-item/';
+import { getReaderFollows } from 'state/selectors';
+import QueryReaderFollows from 'components/data/query-reader-follows';
 // import { recordTrackForPost, recordAction, recordTrack } from 'reader/stats';
 // import { } from 'reader/follow-button/follow-sources';
 
@@ -67,7 +69,6 @@ class FollowingManage extends Component {
 		this.resizeSearchBox();
 
 		this.props.recommendationsStore.on( 'change', this.updateState );
-		this.props.requestFollows();
 	}
 
 	componentWillUnmount() {
@@ -89,13 +90,15 @@ class FollowingManage extends Component {
 	}
 
 	render() {
-		const { query, translate } = this.props;
+		const { query, translate, follows } = this.props;
 		const searchPlaceholderText = translate( 'Search millions of sites' );
 		const recommendations = sampleSize( this.state.recommendations, 2 );
+		console.error( follows );
 
 		return (
 			<ReaderMain className="following-manage">
 				{ this.props.showBack && <HeaderBack /> }
+				{ this.props.follows.length === 0 && <QueryReaderFollows /> }
 				<h1> Follow Something New </h1>
 				<DocumentHead title={ 'Manage Following' } />
 				<div ref={ this.handleStreamMounted } />
@@ -120,8 +123,7 @@ class FollowingManage extends Component {
 }
 
 export default connect(
-	null,
-	dispatch => ( {
-		requestFollows: () => dispatch( { type: 'READER_FOLLOWS_SYNC_START' } ),
+	state => ( {
+		follows: getReaderFollows( state )
 	} ),
 )(	localize( FollowingManage ) );
