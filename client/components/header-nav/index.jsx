@@ -76,7 +76,7 @@ export default class HeaderNav extends Component {
 							label={ this.getSelected().label }
 							icon={ this.getSelected().icon }
 						/>
-						<Gridicon icon="chevron-down" className="header-nav__select__icon" />
+						<Gridicon icon="chevron-down" className="header-nav__select-icon" />
 					</div>
 				}
 				<div className="header-nav__wrapper">
