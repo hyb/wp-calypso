@@ -35,14 +35,9 @@ export default class HeaderNav extends Component {
 		options: []
 	}
 
-	constructor( props ) {
-		super( props );
-
-		this.state = {
-			collapsed: true,
-			width: 99999
-		};
-	}
+	state = {
+		collapsed: true
+	};
 
 	componentDidMount() {
 		this.onResize();
