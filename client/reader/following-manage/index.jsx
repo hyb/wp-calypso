@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { trim, debounce, sampleSize } from 'lodash';
+import { trim, debounce, sampleSize, map, take } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -18,9 +18,39 @@ import ReaderMain from 'components/reader-main';
 import SubscriptionListItem from 'blocks/reader-subscription-list-item/';
 import { getReaderFollows } from 'state/selectors';
 import QueryReaderFollows from 'components/data/query-reader-follows';
+import feedSiteFluxAdapter from 'lib/reader-site-feed-flux-adapter';
 // import { recordTrackForPost, recordAction, recordTrack } from 'reader/stats';
 // import { } from 'reader/follow-button/follow-sources';
 
+/*
+	isFollowing,
+	siteUrl,
+	siteTitle,
+	siteAuthor,
+	siteExcerpt,
+	feedId,
+	siteId,
+	className = '',
+	onSiteClick = () => {},
+	followSource,
+	lastUpdated,
+	translate,
+*/
+
+const ConnectedFollowListItem = localize( feedSiteFluxAdapter(
+	( { feed, site, translate, follow, feedId, siteId } ) => (
+		<SubscriptionListItem
+			isFollowing={ true }
+			siteUrl={ follow.URL }
+			siteTitle={ feed && feed.name }
+			siteAuthor={ site && site.owner }
+			siteExcerpt={ feed && feed.description }
+			translate={ translate }
+			feedId={ feedId }
+			siteId={ siteId }
+		/>
+	)
+) );
 class FollowingManage extends Component {
 
 	static propTypes = {
@@ -84,16 +114,23 @@ class FollowingManage extends Component {
 
 	getStateFromStores() {
 		const { recommendationsStore } = this.props;
+		let recommendations = ( this.state && this.state.recommendations ) || [];
+
+		if ( recommendations.length === 0 ) {
+			recommendations = sampleSize( recommendationsStore.get(), 2 );
+		}
+
 		return {
-			recommendations: recommendationsStore.get()
+			recommendations
 		};
 	}
 
 	render() {
 		const { query, translate, follows } = this.props;
 		const searchPlaceholderText = translate( 'Search millions of sites' );
-		const recommendations = sampleSize( this.state.recommendations, 2 );
-		console.error( follows );
+		const recommendations = this.state.recommendations;
+		// console.error( follows );
+		const followsToShow = take( follows, 25 );
 
 		return (
 			<ReaderMain className="following-manage">
@@ -117,6 +154,14 @@ class FollowingManage extends Component {
 					</CompactCard>
 				</div>
 				<RecommendedPosts recommendations={ recommendations } />
+				{ map( followsToShow, follow =>
+					<ConnectedFollowListItem
+						key={ `follow-${ follow.URL }` }
+						follow={ follow }
+						feedId={ follow.feed_ID }
+						siteId={ follow.blog_ID }
+					/> // todo transform from feed_ID to feedId in data-layer??
+				) }
 			</ReaderMain>
 		);
 	}

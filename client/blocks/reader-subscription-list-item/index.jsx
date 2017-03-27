@@ -45,8 +45,8 @@ function ReaderSubscriptionListItem( {
 } ) {
 	// prefer a users name property
 	// if that doesn't exist settle for combining first and last name
-	const authorName = siteAuthor.name ||
-		trim( `${ siteAuthor.first_name || '' } ${ siteAuthor.last_name || '' }` );
+	const authorName = siteAuthor && ( siteAuthor.name ||
+		trim( `${ siteAuthor.first_name || '' } ${ siteAuthor.last_name || '' }` ) );
 	const readerStreamUrl = getStreamUrl( feedId, siteId );
 
 	return (
@@ -68,7 +68,7 @@ function ReaderSubscriptionListItem( {
 				}
 				<div>{ siteExcerpt }</div>
 				<div className="reader-subscription-list-item__site-url">
-					<a href={ siteUrl }> { stripUrl( siteUrl ) } </a>
+					<a href={ siteUrl }> { siteUrl && stripUrl( siteUrl ) } </a>
 					{ moment( lastUpdated ).fromNow() }
 				</div>
 			</div>
