@@ -12,6 +12,8 @@ import userSettings from 'lib/user-settings';
 import { trackPageLoad, setPageTitle } from 'reader/controller-helper';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import AsyncLoad from 'components/async-load';
+import feedStreamFactory from 'lib/feed-stream-store';
+import { ensureStoreLoading } from 'reader/controller-helper';
 
 const analyticsPageTitle = 'Reader';
 
@@ -45,10 +47,12 @@ export default {
 		const fullAnalyticsPageTitle = analyticsPageTitle + ' > Manage Followed Sites';
 		const mcKey = 'following_edit';
 		const search = context.query.s;
+		const recommendationsStore = feedStreamFactory( 'custom_recs_posts_with_images' );
 
 		setPageTitle( context, i18n.translate( 'Manage Followed Sites' ) );
 
 		trackPageLoad( basePath, fullAnalyticsPageTitle, mcKey );
+		ensureStoreLoading( recommendationsStore, context );
 
 		renderWithReduxStore(
 			<AsyncLoad
@@ -58,6 +62,7 @@ export default {
 				search={ search }
 				context={ context }
 				userSettings={ userSettings }
+				recommendationsStore={ recommendationsStore }
 			/>,
 			document.getElementById( 'primary' ),
 			context.store

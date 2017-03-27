@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { trim, debounce } from 'lodash';
+import { trim, debounce, sampleSize } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 /**
@@ -11,9 +11,11 @@ import { localize } from 'i18n-calypso';
  */
 import CompactCard from 'components/card/compact';
 import DocumentHead from 'components/data/document-head';
-// import RecommendedPosts from '/reader/stream/recommended-posts';
+import RecommendedPosts from 'reader/stream/recommended-posts';
 import HeaderBack from 'reader/header-back';
 import SearchInput from 'components/search';
+import ReaderMain from 'components/reader-main';
+// import SubscriptionListItem from 'blocks/reader-subscription-list-item/';
 // import { recordTrackForPost, recordAction, recordTrack } from 'reader/stats';
 // import { } from 'reader/follow-button/follow-sources';
 
@@ -63,19 +65,38 @@ class FollowingManage extends Component {
 			debounce( this.resizeSearchBox, 50 )
 		);
 		this.resizeSearchBox();
+
+		this.props.recommendationsStore.on( 'change', this.updateState );
+		this.props.requestFollows();
 	}
 
 	componentWillUnmount() {
 		window.removeEventListener( 'resize', this.resizeListener );
+		this.props.recommendationsStore.off( 'change', this.updateState );
+	}
+
+	state = this.getStateFromStores();
+
+	updateState = ( store ) => {
+		this.setState( this.getStateFromStores( store ) );
+	}
+
+	getStateFromStores() {
+		const { recommendationsStore } = this.props;
+		return {
+			recommendations: recommendationsStore.get()
+		};
 	}
 
 	render() {
 		const { query, translate } = this.props;
 		const searchPlaceholderText = translate( 'Search millions of sites' );
+		const recommendations = sampleSize( this.state.recommendations, 2 );
 
 		return (
-			<div className="following-manage">
+			<ReaderMain className="following-manage">
 				{ this.props.showBack && <HeaderBack /> }
+				<h1> Follow Something New </h1>
 				<DocumentHead title={ 'Manage Following' } />
 				<div ref={ this.handleStreamMounted } />
 				<div className="following-manage__fixed-area" ref={ this.handleSearchBoxMounted }>
@@ -92,13 +113,15 @@ class FollowingManage extends Component {
 						</SearchInput>
 					</CompactCard>
 				</div>
-				<hr className="following-manage__fixed-area-separator" />
-			</div>
+				<RecommendedPosts recommendations={ recommendations } />
+			</ReaderMain>
 		);
 	}
 }
 
 export default connect(
 	null,
-	null,
+	dispatch => ( {
+		requestFollows: () => dispatch( { type: 'READER_FOLLOWS_SYNC_START' } ),
+	} ),
 )(	localize( FollowingManage ) );
