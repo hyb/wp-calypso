@@ -1,3 +1,7 @@
+/**
+ * External dependencies
+ */
+
 import analytics from 'lib/analytics';
 import has from 'lodash/has';
 import invoke from 'lodash/invoke';
@@ -43,6 +47,12 @@ export const analyticsMiddleware = () => next => action => {
 	}
 
 	return next( action );
+};
+
+export const loadTrackingTool = ( trackingTool ) => {
+	if ( trackingTool === 'Lucky Orange' ) {
+		analytics.luckyOrange.initialize();
+	}
 };
 
 export default analyticsMiddleware;
