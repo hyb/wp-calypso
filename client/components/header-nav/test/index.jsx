@@ -8,19 +8,33 @@ import { shallow } from 'enzyme';
 /**
  * Internal dependencies
  */
-import useFakeDom from 'test/helpers/use-fake-dom';
+import HeaderNav from '../';
+import Item from '../item';
 
-describe( 'HeaderNav', function() {
-	let HeaderNav;
+describe( 'HeaderNav', () => {
+	const options = [
+		{ label: 'sites', uri: '/sites' },
+		{ label: 'more' }
+	];
 
-	useFakeDom();
-	before( () => {
-		HeaderNav = require( '../' );
+	it( 'should render a navigation bar given a list of options', () => {
+		const headerNav = shallow( <HeaderNav options={ options } uri="" /> );
+		const items = headerNav.find( Item );
+
+		expect( items.length ).to.equal( 2 );
+		expect( items.everyWhere( item => item.prop( 'isSelected' ) ) ).to.equal( false );
+		expect( items.at( 0 ).prop( 'label' ) ).to.equal( 'sites' );
+		expect( items.at( 1 ).prop( 'label' ) ).to.equal( 'more' );
 	} );
 
-	it( 'should render as expected', function() {
-		const wrapper = shallow( <HeaderNav /> );
+	it( 'should mark an option with a matching URI as selected', () => {
+		const headerNav = shallow( <HeaderNav options={ options } uri="/sites" /> );
+		const items = headerNav.find( Item );
 
-		expect( wrapper ).to.have.className( 'header-nav' );
+		expect( items.length ).to.equal( 2 );
+		expect( items.at( 0 ).prop( 'label' ) ).to.equal( 'sites' );
+		expect( items.at( 1 ).prop( 'label' ) ).to.equal( 'more' );
+		expect( items.at( 0 ).prop( 'isSelected' ) ).to.equal( true );
+		expect( items.at( 1 ).prop( 'isSelected' ) ).to.equal( false );
 	} );
 } );
