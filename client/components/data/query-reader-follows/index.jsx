@@ -11,8 +11,7 @@ import { requestFollows } from 'state/reader/follows/actions';
 
 class QueryReaderFollows extends Component {
 	componentWillMount() {
-		this.request( this.props );
-		this.props.requestFollows;
+		this.props.requestFollows();
 	}
 
 	render() {
