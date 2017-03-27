@@ -8,6 +8,10 @@ import classNames from 'classnames';
 import Gridicon from 'gridicons';
 import Item from 'components/header-nav/item';
 
+const VIEW_BREAKPOINT = 660;
+const VIEW_PADDING = 50;
+const ITEM_WIDTH = 110;
+
 export default class HeaderNav extends Component {
 	static propTypes = {
 		fallback: PropTypes.shape(
@@ -142,11 +146,11 @@ export default class HeaderNav extends Component {
 	}
 
 	isFoldable( width, options ) {
-		return 660 < width && width < options.length * 110 + 50;
+		return VIEW_BREAKPOINT < width && width < options.length * ITEM_WIDTH + VIEW_PADDING;
 	}
 
 	isDroppable( width ) {
-		return width < 661;
+		return width <= VIEW_BREAKPOINT;
 	}
 
 	isSelected( option ) {
